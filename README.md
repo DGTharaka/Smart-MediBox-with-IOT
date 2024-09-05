@@ -19,14 +19,6 @@ Different medicines have different requirements for the minimum angle and contro
 - **Alarm System**: Notifications and scheduled alarms for taking medication.
 - **Environmental Monitoring**: Displays real-time temperature and humidity data.
 
-## System Components
-
-- **ESP32 Microcontroller**: Handles sensor data, controls the servo motor, and communicates with the Node-RED dashboard via MQTT.
-- **DHT Sensor**: Measures temperature and humidity.
-- **Servo Motor**: Adjusts the position of the sliding window based on light intensity.
-- **LDR Sensors**: Detects the amount of light to control the servo motor’s movement.
-- **Buzzer**: Notifies users with alarms based on predefined schedules.
-
 ## Node-RED Flow Diagram
 
 Below is the flow diagram of the Node-RED dashboard and MQTT communication:
@@ -77,6 +69,3 @@ The following circuit diagram shows the connections of the ESP32, DHT sensor, LD
 - Add more customizable options for medicine-specific configurations.
 - Introduce a web-based interface for remote control and monitoring.
 
-## License
-
-This project is licensed under the MIT License.
