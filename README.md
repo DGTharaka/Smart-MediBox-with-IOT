@@ -46,7 +46,7 @@ The following image shows the layout of the Node-RED dashboard:
 
 The following circuit diagram shows the connections of the ESP32, DHT sensor, LDRs, and the servo motor:
 
-![Wokwi Circuit](Images/Wokwi_ircuit.png)
+![Wokwi Circuit](Images/Wokwi _Circuit.png)
 
 ### Circuit Components:
 - **ESP32**: Microcontroller that acts as the brain of the system.
