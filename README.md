@@ -23,7 +23,7 @@ Different medicines have different requirements for the minimum angle and contro
 
 Below is the flow diagram of the Node-RED dashboard and MQTT communication:
 
-![Node-RED Flow Diagram](Images\NodeRed_Flow_Diagram.png)
+![Node-RED Flow Diagram](Images/NodeRed_Flow_Diagram.png)
 
 The flow consists of:
 - **Temperature and Humidity Monitoring**: Continuous reading and display on the dashboard.
@@ -34,7 +34,7 @@ The flow consists of:
 
 The following image shows the layout of the Node-RED dashboard:
 
-![Node-RED Dashboard](Images\NodeRed_Dashboard.png)
+![Node-RED Dashboard](Images/NodeRed_Dashboard.png)
 
 ### Dashboard Components:
 - **Medicine Selection Dropdown**: Users can select a medicine type, or opt for a custom mode to manually adjust settings.
@@ -46,7 +46,7 @@ The following image shows the layout of the Node-RED dashboard:
 
 The following circuit diagram shows the connections of the ESP32, DHT sensor, LDRs, and the servo motor:
 
-![Wokwi Circuit](Images\Wokwi_Circuit.png)
+![Wokwi Circuit](Images/Wokwi_Circuit.png)
 
 ### Circuit Components:
 - **ESP32**: Microcontroller that acts as the brain of the system.
