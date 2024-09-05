@@ -1,134 +1,82 @@
 # Smart Medibox Project
 
-## Overview
+This project demonstrates a **Smart Medibox** system, developed as part of an Embedded Systems and Applications module. The system is designed to assist users in managing their medication, monitoring environmental conditions, and providing notifications at scheduled times.
 
-This project involves developing a Smart Medibox using an ESP32 microcontroller, various sensors, and Node-RED. The system adjusts the position of a shaded sliding window based on temperature and light intensity, and provides a user interface for controlling the system's parameters via a Node-RED dashboard.
+## Project Overview
 
-## Problem Statement
+The Smart Medibox uses an ESP32 microcontroller to control various components, such as temperature and humidity sensors, a buzzer for alarms, and a servo motor to control a shaded sliding window based on light intensity and medicine selection.
 
-Different medicines may have different requirements for the minimum angle and the controlling factor used to adjust the position of the shaded sliding window. The following functionalities are implemented:
+### Problem Statement
 
-- **Adjustable Parameters:** Users can adjust the minimum angle and controlling factor using sliders in the Node-RED dashboard.
-- **Dropdown Menu:** A dropdown menu allows users to select between predefined medicines or a custom option. Selecting a specific medicine automatically applies predefined values for the minimum angle and controlling factor.
+Different medicines have different requirements for the minimum angle and controlling factors to adjust the position of the shaded sliding window. This system enables users to:
+
+- Adjust the **minimum angle** and **controlling factor** through sliders on a Node-RED dashboard.
+- Choose from predefined medicine options or a custom mode where they can manually configure the values.
   
-## Node-RED Dashboard
+#### Key Features:
+- **Medicine Selection**: Dropdown menu to select predefined medicines (Tablet A, B, C) or a custom option.
+- **Angle Adjustment**: Slider controls to modify the shaded window's angle based on light intensity.
+- **Alarm System**: Notifications and scheduled alarms for taking medication.
+- **Environmental Monitoring**: Displays real-time temperature and humidity data.
 
-The Node-RED dashboard includes:
-- Two sliders: 
-  - One for adjusting the minimum angle (range: 0 to 120).
-  - One for adjusting the controlling factor (range: 0 to 1).
-- A dropdown menu with options for common medicines (Tablet A, B, C) and a custom option.
+## System Components
 
-![NodeRed Dashboard](NodeRed_Dashboard.png)
+- **ESP32 Microcontroller**: Handles sensor data, controls the servo motor, and communicates with the Node-RED dashboard via MQTT.
+- **DHT Sensor**: Measures temperature and humidity.
+- **Servo Motor**: Adjusts the position of the sliding window based on light intensity.
+- **LDR Sensors**: Detects the amount of light to control the servo motor’s movement.
+- **Buzzer**: Notifies users with alarms based on predefined schedules.
 
 ## Node-RED Flow Diagram
 
-The Node-RED flow diagram illustrates the connections and logic used to control the Smart Medibox system.
+Below is the flow diagram of the Node-RED dashboard and MQTT communication:
 
-![NodeRed Flow Diagram](NodeRed_Flow_Diagram.png)
+![Node-RED Flow Diagram](NodeRed_Flow_Diagram.png)
 
-## Wokwi Circuit
+The flow consists of:
+- **Temperature and Humidity Monitoring**: Continuous reading and display on the dashboard.
+- **Servo Motor Control**: Adjustments to the shaded window position based on the light intensity and selected medicine.
+- **Scheduled Alarms**: Notification system using MQTT to trigger alarms at predefined times.
 
-The Wokwi circuit diagram shows the hardware setup for the Smart Medibox, including the ESP32, sensors, and actuators.
+## Node-RED Dashboard
+
+The following image shows the layout of the Node-RED dashboard:
+
+![Node-RED Dashboard](NodeRed_Dashboard.png)
+
+### Dashboard Components:
+- **Medicine Selection Dropdown**: Users can select a medicine type, or opt for a custom mode to manually adjust settings.
+- **Angle and Control Factor Sliders**: These sliders adjust the window angle and control factor based on the user’s input.
+- **Temperature and Humidity Display**: Real-time environmental monitoring.
+- **Alarm Settings**: Configure scheduled alarms for medication reminders.
+
+## Circuit Diagram
+
+The following circuit diagram shows the connections of the ESP32, DHT sensor, LDRs, and the servo motor:
 
 ![Wokwi Circuit](Wokwi_Circuit.png)
 
-## Code
+### Circuit Components:
+- **ESP32**: Microcontroller that acts as the brain of the system.
+- **DHT Sensor**: Measures temperature and humidity inside the Medibox.
+- **LDR Sensors**: Measures light intensity on both sides of the box.
+- **Servo Motor**: Adjusts the sliding window’s angle based on the LDR readings.
+- **Buzzer**: Provides audible notifications for alarms.
 
-The code for the project is implemented on the ESP32 microcontroller. Below is a summary of the code functionalities:
+## How to Use the System
 
-1. **Libraries and Pin Definitions:**
-   - Libraries: WiFi, DHTesp, PubSubClient, NTPClient, ESP32Servo.
-   - Pins: Defined for DHT sensor, buzzer, servo motor, and LDRs.
+1. **Connect the Components**: Follow the circuit diagram to connect the ESP32 with the DHT sensor, LDRs, servo motor, and buzzer.
+2. **Deploy the Node-RED Dashboard**: Import the Node-RED flow and set up the MQTT communication.
+3. **Monitor Temperature and Humidity**: View real-time temperature and humidity data on the dashboard.
+4. **Control the Window Angle**: Use the sliders to manually adjust the angle or select a predefined medicine for automatic control.
+5. **Set Alarms**: Schedule medication reminders using the alarm feature.
 
-2. **Initialization:**
-   - Sets up WiFi, MQTT, and sensors.
-   - Initializes servo motor with specified pulse width range.
+## Future Improvements
 
-3. **Main Loop:**
-   - Reads temperature and light intensity.
-   - Publishes data to MQTT topics.
-   - Adjusts the servo motor based on light intensity and selected medicine parameters.
+- Implement real-time data logging for long-term tracking of environmental conditions.
+- Add more customizable options for medicine-specific configurations.
+- Introduce a web-based interface for remote control and monitoring.
 
-4. **MQTT Handling:**
-   - Connects to the MQTT broker.
-   - Subscribes to topics and processes incoming messages to adjust system parameters.
+## License
 
-5. **Servo Motor Adjustment:**
-   - Calculates and sets the servo motor angle based on the selected medicine and light intensity.
-
-```cpp
-// Import libraries
-#include <WiFi.h>
-#include "DHTesp.h"
-#include <PubSubClient.h>
-#include <NTPClient.h>
-#include <WiFiUdp.h>
-#include <ESP32Servo.h>
-
-// Define pins
-#define DHT_PIN 15
-#define BUZZER 12
-#define SERVO 18
-#define LEFT_LDR 34
-#define RIGHT_LDR 35
-
-// Initialization
-WiFiClient espClient;
-PubSubClient mqttClient(espClient);
-WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP);
-DHTesp dhtSensor;
-Servo servoMotor;
-
-// For servo motor angle
-float minAngle = 30;
-float controlFactor = 0.75;
-float minAngleA = 40;
-float controlFactorA = 0.6;
-float minAngleB = 50;
-float controlFactorB = 0.5;
-float minAngleC = 60;
-float controlFactorC = 0.3;
-
-// Arrays to store inputs as a string
-char tempAr[6];
-char lightAr[6];
-
-bool isScheduledON = false;
-unsigned long scheduledOnTime;
-float servoAngle;
-double D;
-float tablet; // Variable to assign value comes from ENTC-MEDIBOX-DROPDOWN
-
-void setup() {
-  Serial.begin(115200);
-  setupWifi();
-  setupMqtt();
-  dhtSensor.setup(DHT_PIN, DHTesp::DHT22);
-  timeClient.begin();
-  timeClient.setTimeOffset(5.5*3600); // Setting time offset
-  pinMode(BUZZER, OUTPUT);
-  digitalWrite(BUZZER, LOW); // At the beginning buzzer is silent
-  pinMode(LEFT_LDR, INPUT);
-  pinMode(RIGHT_LDR, INPUT);
-  servoMotor.attach(SERVO, 500, 2400); // Attach servo motor
-}
-
-void loop() {
-  if (!mqttClient.connected()) {
-    connectToBroker();
-  }
-  mqttClient.loop();
-  updateTemperature(); // Read temperature
-  Serial.print("Temperature: ");
-  Serial.println(tempAr);
-  mqttClient.publish("ENTC-DASHBOARD-TEMP", tempAr); // Publish temperature
-  checkSchedule();
-  updateLightIntensity(); // Read light intensity
-  mqttClient.publish("ENTC-DASHBOARD-LIGHT", lightAr); // Publish light intensity
-  delay(1000);
-}
-
-// Function implementations...
-
+This project is licensed under the MIT License.
