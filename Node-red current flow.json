@@ -1,0 +1,989 @@
+[
+    {
+        "id": "cd36737df1e33117",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "84aef85802c7f52f",
+        "type": "function",
+        "z": "cd36737df1e33117",
+        "name": "function 1",
+        "func": "let isScheduled = global.get(\"isScheduled\");\nlet scheduleDate = global.get(\"scheduleDate\");\nlet scheduleTime = global.get(\"scheduleTime\");\n\nif(isScheduled && scheduleDate && scheduleTime){\n\n    let schedule = scheduleDate + scheduleTime;\n\n    if(Date.now()>schedule){\n        return{\n            payload:\"OLDER\"\n        }\n    }else{\n        return{\n            payload:schedule\n        }\n    }\n    \n}else if(isScheduled === false){\n    return{\n        payload:\"NOT-SCHEDULED-ON\"\n    }\n\n}else{\n    return {\n        payload:null\n    }\n}\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 960,
+        "y": 640,
+        "wires": [
+            [
+                "d8f69521a255b890"
+            ]
+        ]
+    },
+    {
+        "id": "cc183e14dbb4345c",
+        "type": "ui_gauge",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "group": "0012b098a9f46670",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "gauge",
+        "label": "units",
+        "format": "{{payload}}",
+        "min": 0,
+        "max": "50",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 350,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "cdea6297e5fdb58d",
+        "type": "ui_chart",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "group": "0012b098a9f46670",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "label": "chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 350,
+        "y": 800,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "67772e6d711c8ede",
+        "type": "mqtt in",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "topic": "ENTC-DASHBOARD-TEMP",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "dec065f82f996aa6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 760,
+        "wires": [
+            [
+                "cc183e14dbb4345c",
+                "cdea6297e5fdb58d"
+            ]
+        ]
+    },
+    {
+        "id": "cf8f41aa52b37806",
+        "type": "ui_switch",
+        "z": "cd36737df1e33117",
+        "name": "Mian Switch",
+        "label": "switch",
+        "tooltip": "",
+        "group": "77713a1fcdb3351d",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": true,
+        "className": "",
+        "x": 290,
+        "y": 500,
+        "wires": [
+            [
+                "6e43a4f431e01e30"
+            ]
+        ]
+    },
+    {
+        "id": "6e43a4f431e01e30",
+        "type": "mqtt out",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "topic": "ENTC-DASHBOARD-MAIN-ON-OFF",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "dec065f82f996aa6",
+        "x": 590,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "1194c957dbcd913f",
+        "type": "ui_switch",
+        "z": "cd36737df1e33117",
+        "name": "Schedule Switch",
+        "label": "switch",
+        "tooltip": "",
+        "group": "fede8673c759b07d",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 490,
+        "y": 600,
+        "wires": [
+            [
+                "6d586ba8cff2295a"
+            ]
+        ]
+    },
+    {
+        "id": "6d586ba8cff2295a",
+        "type": "change",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "isScheduled",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 720,
+        "y": 600,
+        "wires": [
+            [
+                "84aef85802c7f52f"
+            ]
+        ]
+    },
+    {
+        "id": "5b2a427f922a16d4",
+        "type": "ui_date_picker",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "label": "ON",
+        "group": "fede8673c759b07d",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 510,
+        "y": 660,
+        "wires": [
+            [
+                "e8d9a8fe380a14f8"
+            ]
+        ]
+    },
+    {
+        "id": "0e35e46aa768dfb2",
+        "type": "ui_text_input",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "label": "Alarm Time",
+        "tooltip": "",
+        "group": "fede8673c759b07d",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "time",
+        "delay": 300,
+        "topic": "topic",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "msg",
+        "x": 530,
+        "y": 720,
+        "wires": [
+            [
+                "9ff94f86de2d83db"
+            ]
+        ]
+    },
+    {
+        "id": "e8d9a8fe380a14f8",
+        "type": "change",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "scheduleDate",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 730,
+        "y": 660,
+        "wires": [
+            [
+                "84aef85802c7f52f"
+            ]
+        ]
+    },
+    {
+        "id": "9ff94f86de2d83db",
+        "type": "change",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "scheduleTime",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 730,
+        "y": 720,
+        "wires": [
+            [
+                "84aef85802c7f52f"
+            ]
+        ]
+    },
+    {
+        "id": "d8f69521a255b890",
+        "type": "switch",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "NOT-SCHEDULED-ON",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "OLDER",
+                "vt": "str"
+            },
+            {
+                "t": "nnull"
+            },
+            {
+                "t": "null"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 4,
+        "x": 1130,
+        "y": 640,
+        "wires": [
+            [
+                "4a457175d64de42e"
+            ],
+            [
+                "fb49a082990fd06c"
+            ],
+            [
+                "ca6a6ed376297729"
+            ],
+            [
+                "8ba43d3bb61951df"
+            ]
+        ]
+    },
+    {
+        "id": "4a457175d64de42e",
+        "type": "function",
+        "z": "cd36737df1e33117",
+        "name": "function 2",
+        "func": "return{\n    payload:\"NOT\",\n};",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1320,
+        "y": 580,
+        "wires": [
+            [
+                "01f36c813ba4ce53"
+            ]
+        ]
+    },
+    {
+        "id": "ca6a6ed376297729",
+        "type": "function",
+        "z": "cd36737df1e33117",
+        "name": "function 3",
+        "func": "return{\n    payload:Math.round(msg.payload/1000),\n\n};",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1320,
+        "y": 620,
+        "wires": [
+            [
+                "01f36c813ba4ce53"
+            ]
+        ]
+    },
+    {
+        "id": "fb49a082990fd06c",
+        "type": "function",
+        "z": "cd36737df1e33117",
+        "name": "function 4",
+        "func": "return {\n    payload: \"Please enter a future time\"\n};",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1320,
+        "y": 660,
+        "wires": [
+            [
+                "78abd1188dafb098"
+            ]
+        ]
+    },
+    {
+        "id": "8ba43d3bb61951df",
+        "type": "function",
+        "z": "cd36737df1e33117",
+        "name": "function 5",
+        "func": "return{\n    payload: \"Please enter valid date and time\"\n};",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1320,
+        "y": 700,
+        "wires": [
+            [
+                "78abd1188dafb098"
+            ]
+        ]
+    },
+    {
+        "id": "78abd1188dafb098",
+        "type": "ui_toast",
+        "z": "cd36737df1e33117",
+        "position": "top right",
+        "displayTime": "3",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "",
+        "x": 1530,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "01f36c813ba4ce53",
+        "type": "mqtt out",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "topic": "ENTC-DASHBOARD-SCH-ON",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "dec065f82f996aa6",
+        "x": 1570,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "2007fa2d4cd354a0",
+        "type": "mqtt in",
+        "z": "cd36737df1e33117",
+        "name": "ESP-ON-OFF",
+        "topic": "ENTC-MEDIBOX-MAIN-ON-OFF-ESP",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "dec065f82f996aa6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 500,
+        "wires": [
+            [
+                "cf8f41aa52b37806"
+            ]
+        ]
+    },
+    {
+        "id": "5ced94e266b4545d",
+        "type": "mqtt in",
+        "z": "cd36737df1e33117",
+        "name": "SCH-ESP-ON",
+        "topic": "ENTC-MEDIBOX-SCH-ESP-ON",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "dec065f82f996aa6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 600,
+        "wires": [
+            [
+                "bafe0f5da24ffc31"
+            ]
+        ]
+    },
+    {
+        "id": "bafe0f5da24ffc31",
+        "type": "function",
+        "z": "cd36737df1e33117",
+        "name": "function 6",
+        "func": "return{\n    payload:msg.payload === 1\n\n};",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 600,
+        "wires": [
+            [
+                "1194c957dbcd913f"
+            ]
+        ]
+    },
+    {
+        "id": "44436db8f4191f06",
+        "type": "mqtt in",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "topic": "ENTC-DASHBOARD-LIGHT",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "dec065f82f996aa6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 140,
+        "wires": [
+            [
+                "69e53aa92e58e882",
+                "0f0341b3bb6041ff"
+            ]
+        ]
+    },
+    {
+        "id": "69e53aa92e58e882",
+        "type": "ui_gauge",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "group": "dc4bfaeaca97796c",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "gauge",
+        "label": "units",
+        "format": "{{payload}}",
+        "min": 0,
+        "max": "1",
+        "colors": [
+            "#82c9e8",
+            "#0499a4",
+            "#03299b"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 350,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "0f0341b3bb6041ff",
+        "type": "ui_chart",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "group": "dc4bfaeaca97796c",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "Light Intensity vs Time",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 400,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "35fad59aa34662a7",
+        "type": "ui_slider",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "label": "Minimum Angle",
+        "tooltip": "",
+        "group": "6bb0c4adca6860ca",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": 0,
+        "max": "120",
+        "step": 1,
+        "className": "",
+        "x": 680,
+        "y": 100,
+        "wires": [
+            [
+                "1b708473dda63625"
+            ]
+        ]
+    },
+    {
+        "id": "6b6b51fdcefb4606",
+        "type": "ui_slider",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "label": "Control Factor",
+        "tooltip": "",
+        "group": "6bb0c4adca6860ca",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": 0,
+        "max": "1",
+        "step": "0.01",
+        "className": "",
+        "x": 680,
+        "y": 180,
+        "wires": [
+            [
+                "178d8c50830ec61f"
+            ]
+        ]
+    },
+    {
+        "id": "1b708473dda63625",
+        "type": "mqtt out",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "topic": "ENTC-MEDIBOX-MINIMUM-ANGLE",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "dec065f82f996aa6",
+        "x": 970,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "178d8c50830ec61f",
+        "type": "mqtt out",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "topic": "ENTC-MEDIBOX-CONTROL-FACTOR",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "dec065f82f996aa6",
+        "x": 970,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "ee0bc882f0ac57ce",
+        "type": "ui_text",
+        "z": "cd36737df1e33117",
+        "group": "dc4bfaeaca97796c",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Highest intensity detected:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 680,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "51b0018f3418efcb",
+        "type": "mqtt in",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "topic": "ENTC-MEDIBOX-MAX-LDR",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "dec065f82f996aa6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 260,
+        "wires": [
+            [
+                "dd48bbd156b86bb1"
+            ]
+        ]
+    },
+    {
+        "id": "dd48bbd156b86bb1",
+        "type": "function",
+        "z": "cd36737df1e33117",
+        "name": "function 7",
+        "func": "if(msg.payload === \"LEFT_LDR\"){\n    msg.payload =\"Left LDR\";\n} else if (msg.payload === \"RIGHT_LDR\"){\n    msg.payload = \"Right LDR\"\n}else{\n    msg.payload = \"Both LDR\"\n}\n\nreturn{\n    payload:msg.payload\n};\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 260,
+        "wires": [
+            [
+                "ee0bc882f0ac57ce"
+            ]
+        ]
+    },
+    {
+        "id": "343fdc1a324b37c2",
+        "type": "ui_dropdown",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "label": "Dropdown Menu",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "6bb0c4adca6860ca",
+        "order": 3,
+        "width": "0",
+        "height": "0",
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "A",
+                "value": 1,
+                "type": "num"
+            },
+            {
+                "label": "B",
+                "value": 2,
+                "type": "num"
+            },
+            {
+                "label": "C",
+                "value": 3,
+                "type": "num"
+            },
+            {
+                "label": "Custom",
+                "value": 4,
+                "type": "num"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 180,
+        "y": 380,
+        "wires": [
+            [
+                "08c9ced19e3a51e2"
+            ]
+        ]
+    },
+    {
+        "id": "08c9ced19e3a51e2",
+        "type": "mqtt out",
+        "z": "cd36737df1e33117",
+        "name": "",
+        "topic": "ENTC-MEDIBOX-DROPDOWN",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "dec065f82f996aa6",
+        "x": 510,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "a4406a85bb788f46",
+        "type": "ui_spacer",
+        "z": "cd36737df1e33117",
+        "name": "spacer",
+        "group": "0012b098a9f46670",
+        "order": 1,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "44b60a9cf9b2463c",
+        "type": "ui_spacer",
+        "z": "cd36737df1e33117",
+        "name": "spacer",
+        "group": "0012b098a9f46670",
+        "order": 2,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "0012b098a9f46670",
+        "type": "ui_group",
+        "name": "Temperature",
+        "tab": "1a1480d3d37e5402",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "dec065f82f996aa6",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "77713a1fcdb3351d",
+        "type": "ui_group",
+        "name": "Main Switch",
+        "tab": "1a1480d3d37e5402",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "fede8673c759b07d",
+        "type": "ui_group",
+        "name": "Schedule",
+        "tab": "1a1480d3d37e5402",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "dc4bfaeaca97796c",
+        "type": "ui_group",
+        "name": "Light Intensity",
+        "tab": "1a1480d3d37e5402",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "6bb0c4adca6860ca",
+        "type": "ui_group",
+        "name": "Shade Controller",
+        "tab": "1a1480d3d37e5402",
+        "order": 5,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "1a1480d3d37e5402",
+        "type": "ui_tab",
+        "name": "Medibox",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
