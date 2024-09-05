@@ -63,9 +63,3 @@ The following circuit diagram shows the connections of the ESP32, DHT sensor, LD
 4. **Control the Window Angle**: Use the sliders to manually adjust the angle or select a predefined medicine for automatic control.
 5. **Set Alarms**: Schedule medication reminders using the alarm feature.
 
-## Future Improvements
-
-- Implement real-time data logging for long-term tracking of environmental conditions.
-- Add more customizable options for medicine-specific configurations.
-- Introduce a web-based interface for remote control and monitoring.
-
